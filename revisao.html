@@ -817,7 +817,7 @@ window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES,
   // VIDEOS
   const vl=document.getElementById('videoList');
   VIDEOS.forEach((v,i)=>{
-    const poster=`<a class="thumb vidthumb" href="${v.arquivo}" target="_blank" style="background:${v.tema}"><div class="play"><svg width="22" height="22" viewBox="0 0 24 24" fill="#E6CB93"><path d="M6 4l14 8-14 8z"></path></svg></div></a>`;
+    const poster=`<a class="thumb vidthumb" href="${buildWatchUrl(v.arquivo)}" target="_blank" style="background:${v.tema}"><div class="play"><svg width="22" height="22" viewBox="0 0 24 24" fill="#E6CB93"><path d="M6 4l14 8-14 8z"></path></svg></div></a>`;
     vl.appendChild(buildItem({id:'video-'+i,grupo:'Vídeo',artHTML:poster,fmt:v.fmt,title:v.titulo,copy:v.legenda,hashtags:v.hashtags,watch:buildWatchUrl(v.arquivo)}));
   });
   document.getElementById('videoCount').textContent=`${VIDEOS.length} vídeos`;
