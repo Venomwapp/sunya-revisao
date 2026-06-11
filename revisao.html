@@ -133,8 +133,6 @@
     <span class="mark">sunya</span>
     <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--corpo)">Revisão</span>
     <div class="secs">
-      <a href="Central de Conteúdo.html">Central</a>
-      <a href="Conteúdo para Aprovação.html">Conteúdo</a>
       <a href="#feed">Feed</a>
       <a href="#carro">Carrosséis</a>
       <a href="#stories">Stories</a>
@@ -592,14 +590,6 @@ window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES,
    creme/escuro/dourado, selo e assinatura da marca.
    ================================================================= */
 (function(){
-
-  const _FILE_MAP = {"Motion Dona ou Funcionária.html":"motion-dona.html","Motion Funcionalidades.html":"motion-features.html","Motion Apresentando o App.html":"motion-app.html","Motion Conceito.html":"motion-conceito.html","Reels Sunya.html":"reels.html"};
-  function buildWatchUrl(arquivo) {
-    var base = 'https://venomwapp.github.io/sunya-revisao/';
-    var name = _FILE_MAP[arquivo] || arquivo;
-    return base + name;
-  }
-
   const C = {
     creme:'#F6F0E6', papel:'#FBF7F0', areia:'#E8D8C0',
     escuro:'#2A2420', escuro2:'#231E1A',
@@ -744,6 +734,14 @@ window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES,
 </script>
 <script>
 (function(){
+
+  const _FILE_MAP = {"Motion Dona ou Funcionária.html":"motion-dona.html","Motion Funcionalidades.html":"motion-features.html","Motion Apresentando o App.html":"motion-app.html","Motion Conceito.html":"motion-conceito.html","Reels Sunya.html":"reels.html"};
+  function buildWatchUrl(arquivo) {
+    var base = 'https://venomwapp.github.io/sunya-revisao/';
+    var name = _FILE_MAP[arquivo] || arquivo;
+    return base + name;
+  }
+
   const {FEED, CARROSSEIS, STORIES, DESTAQUES, VIDEOS} = window.SUNYA_AP;
   const {renderFeed, renderSlide, renderStory} = window.SUNYA_RAP;
   const PILN={dor:'Dor real',voz:'Voz de quem usa',educacao:'Educação do estúdio',produto:'Produto e Eliá',autoridade:'Autoridade da marca',mentalidade:'Mentalidade',comunidade:'Comunidade'};
