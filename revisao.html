@@ -137,6 +137,16 @@
 
   .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--escuro);color:#E6CB93;padding:14px 26px;border-radius:100px;font-size:13px;transition:transform .3s;z-index:70;}
   .toast.show{transform:translateX(-50%) translateY(0);}
+
+  /* como usar */
+  .howto{background:var(--branco);border:1px solid var(--border);border-radius:20px;padding:30px 34px;margin:30px 0 6px;}
+  .howto .htitle{font-family:'Instrument Serif',serif;font-size:28px;color:var(--marrom);margin-bottom:22px;letter-spacing:-.3px;}
+  .howto .hsteps{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px;}
+  @media(max-width:680px){.howto .hsteps{grid-template-columns:1fr;}}
+  .howto .hstep{display:flex;gap:15px;font-size:14px;line-height:1.55;color:#5f5347;font-weight:300;}
+  .howto .hstep b{color:var(--marrom);font-weight:500;}
+  .howto .hstep .hn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--caramelo);color:#FBF7F0;font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;display:grid;place-items:center;}
+  .howto .hnote{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);font-size:13px;line-height:1.6;color:#8a7a63;font-weight:300;}
 </style>
 </head>
 <body>
@@ -162,6 +172,16 @@
 </div>
 
 <div class="wrap">
+  <div class="howto">
+    <div class="htitle">Como usar esta página, Elianna</div>
+    <div class="hsteps">
+      <div class="hstep"><span class="hn">1</span><div><b>Marque cada peça.</b> Em cada arte, toque em Aprovado, Ajustar, Refazer ou Não aprovado. A borda da peça muda de cor e o contador lá em cima soma a sua escolha.</div></div>
+      <div class="hstep"><span class="hn">2</span><div><b>Escreva o que mudar.</b> Nos campos Ajuste na arte e Ajuste na copy, digite com as suas palavras. É só escrever, não tem botão de salvar.</div></div>
+      <div class="hstep"><span class="hn">3</span><div><b>Tudo é salvo sozinho.</b> Cada toque e cada palavra ficam guardados neste navegador na hora. Você pode fechar, recarregar a página ou voltar amanhã: <b>não perde nada.</b></div></div>
+      <div class="hstep"><span class="hn">4</span><div><b>No fim, toque em Copiar resumo.</b> Abre um texto com tudo o que você marcou e escreveu, organizado. Toque em Copiar e me envie no WhatsApp. É só isso que eu preciso receber.</div></div>
+    </div>
+    <div class="hnote">Dica: faça no mesmo aparelho e no mesmo navegador. Como fica salvo aqui no seu navegador, se abrir em outro celular ou em aba anônima, as marcações não aparecem. Pode ir com calma, parar e continuar quando quiser.</div>
+  </div>
   <div class="summary">
     <div class="counts" id="counts"></div>
     <div class="prog"><span id="prog" style="width:0%"></span></div>
@@ -569,23 +589,23 @@ const VIDEOS = [
     titulo:'Conceito · <em>A Pele Lembra</em>',
     legenda:'Film editorial cinético, sem mockup. A Sunya mais glamour. Direção para aprovar ou descartar.',
     hashtags:'#sunya #bronzenatural #marca #beleza' },
-  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+  { arquivo:'Reel 47 Mensagens.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
     titulo:'Reel · <em>47 mensagens</em>',
     legenda:'A dor do WhatsApp lotado e a Eliá assumindo. Gancho, prova e convite em 15s. Teste agora, link na bio.',
     hashtags:'#sunya #elia #estudiodebronze #profissionaldobronze' },
-  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+  { arquivo:'Reel Do Caderno.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
     titulo:'Reel · <em>Do caderno ao sistema</em>',
     legenda:'Nada contra a agenda manual, ela foi fiel. Mas existe um jeito mais leve agora. Salva e envia para uma colega.',
     hashtags:'#sunya #organizacao #bronzenatural #estudiodebronze' },
-  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+  { arquivo:'Reel Madrugada.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
     titulo:'Reel · <em>Não dorme, não esquece</em>',
     legenda:'A Eliá fechando horário às 23h, enquanto você descansa. Quer testar? 7 dias grátis, link na bio.',
     hashtags:'#sunya #elia #agenda #bronzenatural' },
-  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+  { arquivo:'Reel Caixa.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
     titulo:'Reel · <em>O caixa fecha sozinho</em>',
     legenda:'Do mês no escuro ao lucro claro. O caixa da Sunya fecha sozinho. Teste agora e veja o número que importa.',
     hashtags:'#sunya #caixa #lucro #empresariadobronze' },
-  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 14s', tema:'#F6F0E6',
+  { arquivo:'Reel Empresaria.html', fmt:'Reel 9:16 · 14s', tema:'#F6F0E6',
     titulo:'Reel · <em>De bronzeadora a empresária</em>',
     legenda:'O manifesto da marca em movimento. Proteger, libertar, profissionalizar. Salva e marca uma colega.',
     hashtags:'#sunya #empresariadobronze #mentalidade #estudiodebronze' },
@@ -747,7 +767,7 @@ window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES,
 <script>
 (function(){
 
-  const _FILE_MAP = {"Motion Dona ou Funcionária.html":"motion-dona.html","Motion Funcionalidades.html":"motion-features.html","Motion Apresentando o App.html":"motion-app.html","Motion Conceito.html":"motion-conceito.html","Reels Sunya.html":"reels.html"};
+  const _FILE_MAP = {"Motion Dona ou Funcionária.html":"motion-dona.html","Motion Funcionalidades.html":"motion-features.html","Motion Apresentando o App.html":"motion-app.html","Motion Conceito.html":"motion-conceito.html","Reels Sunya.html":"reels.html","Reel 47 Mensagens.html":"reel-47.html","Reel Do Caderno.html":"reel-caderno.html","Reel Madrugada.html":"reel-madrugada.html","Reel Caixa.html":"reel-caixa.html","Reel Empresaria.html":"reel-empresaria.html"};
   function buildWatchUrl(arquivo) {
     var base = 'https://venomwapp.github.io/sunya-revisao/';
     var name = _FILE_MAP[arquivo] || arquivo;
