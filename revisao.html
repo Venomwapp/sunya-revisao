@@ -111,6 +111,18 @@
   .vidthumb:hover .play{background:rgba(230,203,147,.3);}
   .watch{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--caramelo);text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
 
+  /* player de vídeo inline */
+  .vidbox{position:relative;margin:0 auto;width:100%;border-radius:14px;overflow:hidden;background:#1a1612;box-shadow:0 18px 44px -22px rgba(74,48,32,.5);}
+  .vidbox.v916{max-width:300px;aspect-ratio:9/16;}
+  .vidbox.v169{max-width:640px;aspect-ratio:16/9;}
+  .vidbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;}
+  .vidbox .poster{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer;background:var(--vbg,#1a1612);}
+  .vidbox .poster .play{width:68px;height:68px;border-radius:50%;background:rgba(230,203,147,.18);border:1px solid rgba(230,203,147,.55);display:grid;place-items:center;transition:.18s;}
+  .vidbox .poster:hover .play{background:rgba(230,203,147,.32);transform:scale(1.05);}
+  .vidbox .poster .lab{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#E6CB93;}
+  .vidfallback{position:absolute;inset:0;display:grid;place-items:center;gap:10px;text-decoration:none;background:var(--vbg,#1a1612);color:#E6CB93;font-family:'Montserrat';font-size:13px;font-weight:500;letter-spacing:.04em;text-align:center;padding:20px;}
+  .vidfallback span{display:block;font-size:11px;color:#C8B79B;letter-spacing:.02em;font-weight:300;}
+
   /* modal resumo */
   .modal{position:fixed;inset:0;z-index:60;background:rgba(42,36,32,.62);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:30px;}
   .modal.open{display:flex;}
@@ -767,7 +779,7 @@ window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES,
     el.innerHTML=`
       <div class="artarea">${opts.artHTML}</div>
       <div class="rcol">
-        <div class="rmeta">${opts.pil?`<span class="pil">${opts.pil}</span>`:''}${opts.fmt?`<span class="fmt">${opts.fmt}</span>`:''}${opts.nslides?`<span class="fmt">${opts.nslides} dobras</span>`:''}${opts.watch?`<a class="watch" href="${opts.watch}" target="_blank">▶ Assistir</a>`:''}</div>
+        <div class="rmeta">${opts.pil?`<span class="pil">${opts.pil}</span>`:''}${opts.fmt?`<span class="fmt">${opts.fmt}</span>`:''}${opts.nslides?`<span class="fmt">${opts.nslides} dobras</span>`:''}${opts.watch?`<a class="watch" href="${encodeURI(opts.watch)}" target="_blank">▶ Assistir</a>`:''}</div>
         <div class="rtitle">${opts.title}</div>
         ${opts.sub?`<div class="rsub">${opts.sub}</div>`:''}
         ${copyBlock}
@@ -812,13 +824,34 @@ window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES,
   DESTAQUES.forEach((d,i)=>dl.appendChild(buildItem({id:'dest-'+i,grupo:'Destaque',wide:true,artHTML:stripOf(d.slides,renderStory,true),fmt:'Destaque',nslides:d.slides.length,title:d.nome,sub:strip(d.slides[0].title),copy:d.legenda,hashtags:d.hashtags})));
   document.getElementById('destCount').textContent=`${DESTAQUES.length} sequências · todas as telas`;
 
-  // VIDEOS
+  // VIDEOS · player inline (toque para assistir)
   const vl=document.getElementById('videoList');
   VIDEOS.forEach((v,i)=>{
-    const poster=`<a class="thumb vidthumb" href="${buildWatchUrl(v.arquivo)}" target="_blank" style="background:${v.tema}"><div class="play"><svg width="22" height="22" viewBox="0 0 24 24" fill="#E6CB93"><path d="M6 4l14 8-14 8z"></path></svg></div></a>`;
-    vl.appendChild(buildItem({id:'video-'+i,grupo:'Vídeo',artHTML:poster,fmt:v.fmt,title:v.titulo,copy:v.legenda,hashtags:v.hashtags,watch:buildWatchUrl(v.arquivo)}));
+    const v169=/16:9/.test(v.fmt);
+    const box=`<div class="vidbox ${v169?'v169':'v916'}" data-src="${buildWatchUrl(v.arquivo)}" style="--vbg:${v.tema}"><div class="poster"><div class="play"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E6CB93"><path d="M6 4l14 8-14 8z"></path></svg></div><div class="lab">Tocar o vídeo</div></div></div>`;
+    const el=buildItem({id:'video-'+i,grupo:'Vídeo',wide:true,artHTML:box,fmt:v.fmt,title:v.titulo,copy:v.legenda,hashtags:v.hashtags,watch:buildWatchUrl(v.arquivo)});
+    vl.appendChild(el);
+    const vb=el.querySelector('.vidbox');
+    vb.querySelector('.poster').addEventListener('click',()=>{
+      if(vb.dataset.loaded)return; vb.dataset.loaded='1';
+      const url=encodeURI(vb.dataset.src);
+      const ifr=document.createElement('iframe');
+      ifr.src=url; ifr.loading='lazy'; ifr.setAttribute('allow','autoplay; fullscreen');
+      vb.appendChild(ifr);
+      const p=vb.querySelector('.poster'); if(p)p.style.display='none';
+      // fallback: se o player inline não confirmar, oferece abrir em nova aba
+      setTimeout(()=>{
+        let ok=false; try{ok=!!(ifr.contentDocument&&ifr.contentDocument.getElementById('motion-root'));}catch(e){ok=true;}
+        if(!ok){
+          const fb=document.createElement('a');
+          fb.href=url; fb.target='_blank'; fb.className='vidfallback';
+          fb.innerHTML='▶ Abrir o vídeo em nova aba ↗<span>o motion completo toca em tela cheia</span>';
+          vb.appendChild(fb);
+        }
+      },5500);
+    });
   });
-  document.getElementById('videoCount').textContent=`${VIDEOS.length} vídeos`;
+  document.getElementById('videoCount').textContent=`${VIDEOS.length} vídeos · toque para assistir`;
 
   // SUMMARY
   function updateSummary(){
