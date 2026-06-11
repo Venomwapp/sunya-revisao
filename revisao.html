@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunya · Revisão da Parceira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --offwhite:#FAF8F4; --branco:#fff; --creme:#F6F0E6; --papel:#FBF7F0;
+    --caramelo:#8B5A2B; --bronze:#B0824F; --italico:#8A6438; --dourado:#C9A35B;
+    --marrom:#3C2A1C; --corpo:#6E6155; --border:#E2D7C9; --escuro:#2A2420;
+    --aprovado:#1F8A5B; --refazer:#9C4A33; --ajustar:#C9A35B; --nao:#7a6453;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#EAE2D4;font-family:'Plus Jakarta Sans',sans-serif;color:var(--corpo);font-weight:300;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 44px 180px;}
+
+  .topnav{position:sticky;top:0;z-index:40;background:rgba(234,226,212,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+  .topnav .inner{max-width:1180px;margin:0 auto;padding:14px 44px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .topnav .mark{font-family:'Instrument Serif',serif;font-size:22px;letter-spacing:.42em;text-transform:lowercase;color:var(--caramelo);padding-left:.42em;}
+  .topnav .secs{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap;}
+  .topnav .secs a{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--corpo);text-decoration:none;padding:8px 12px;border-radius:100px;}
+  .topnav .secs a:hover{background:var(--branco);color:var(--caramelo);}
+
+  .hero{background:var(--escuro);border-radius:0 0 26px 26px;padding:54px 54px 48px;color:#CBBFA8;position:relative;overflow:hidden;margin-bottom:26px;}
+  .hero .glow{position:absolute;right:-120px;top:-120px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(230,203,147,.16),transparent 60%);}
+  .hero .seal{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:.58em;text-transform:lowercase;color:#E6CB93;padding-left:.58em;margin-bottom:18px;position:relative;}
+  .hero h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1.04;color:#F6F0E6;letter-spacing:-1px;position:relative;}
+  .hero h1 em{font-style:italic;color:#E6CB93;}
+  .hero p{font-size:15px;line-height:1.7;max-width:680px;margin-top:18px;color:#C8B79B;position:relative;}
+  .hero p b{color:#F6F0E6;font-weight:500;}
+
+  /* barra de resumo fixa */
+  .summary{position:sticky;top:58px;z-index:30;background:var(--branco);border:1px solid var(--border);border-radius:16px;padding:16px 22px;margin-bottom:30px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;box-shadow:0 10px 30px -18px rgba(74,48,32,.3);}
+  .summary .counts{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;}
+  .summary .counts span{display:inline-flex;align-items:center;gap:8px;color:var(--corpo);}
+  .summary .counts .dot{width:10px;height:10px;border-radius:50%;}
+  .summary .prog{flex:1;min-width:160px;height:8px;background:var(--creme);border-radius:100px;overflow:hidden;}
+  .summary .prog span{display:block;height:100%;background:var(--aprovado);transition:width .3s;}
+  .summary .btn{font-family:'Montserrat';font-size:12px;font-weight:600;letter-spacing:.06em;padding:12px 22px;border-radius:100px;border:none;background:var(--caramelo);color:#FBF7F0;cursor:pointer;transition:.16s;}
+  .summary .btn:hover{background:#724821;}
+  .summary .btn.done{background:var(--aprovado);}
+
+  .shead{margin:48px 0 18px;}
+  .shead .n{font-family:'Instrument Serif',serif;font-style:italic;color:var(--dourado);font-size:30px;margin-right:14px;}
+  .shead h2{display:inline;font-family:'Instrument Serif',serif;font-weight:400;font-size:36px;line-height:1.1;color:var(--marrom);letter-spacing:-.5px;}
+  .scount{font-size:12.5px;color:#9a8a76;margin-top:6px;letter-spacing:.03em;}
+
+  /* review item */
+  .item{background:var(--branco);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;display:grid;grid-template-columns:240px 1fr;gap:28px;transition:border-color .2s;}
+  @media(max-width:820px){.item{grid-template-columns:1fr;}}
+  .item.is-aprovado{border-color:var(--aprovado);}
+  .item.is-refazer{border-color:var(--refazer);}
+  .item.is-ajustar{border-color:var(--ajustar);}
+  .item.is-nao{border-color:var(--nao);}
+
+  .thumb{width:100%;aspect-ratio:1080/1350;border-radius:10px;overflow:hidden;position:relative;background:var(--creme);box-shadow:0 16px 36px -22px rgba(74,48,32,.45);container-type:inline-size;}
+  .thumb.story{aspect-ratio:1080/1920;}
+  .thumb .art{position:absolute;top:0;left:0;transform-origin:top left;transform:scale(calc(100cqw / 1080px));}
+  .thumb .nslides{position:absolute;bottom:8px;right:8px;background:rgba(42,36,32,.82);color:#E6CB93;font-size:10px;letter-spacing:.08em;padding:4px 10px;border-radius:100px;}
+
+  .rcol{display:flex;flex-direction:column;gap:14px;}
+  .rmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .rmeta .pil{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a7a63;}
+  .rmeta .fmt{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#b0a187;border:1px solid #ddcdb5;border-radius:100px;padding:3px 10px;white-space:nowrap;}
+  .rtitle{font-family:'Instrument Serif',serif;font-size:24px;line-height:1.2;color:var(--marrom);}
+  .rtitle em{font-style:italic;color:var(--italico);}
+  .rsub{font-size:12.5px;line-height:1.5;color:#8a7a63;}
+
+  .status{display:flex;gap:8px;flex-wrap:wrap;}
+  .sbtn{font-family:'Montserrat';font-size:12px;font-weight:500;letter-spacing:.03em;padding:11px 18px;border-radius:100px;border:1px solid var(--border);background:transparent;color:#7a5a34;cursor:pointer;transition:.16s;display:inline-flex;align-items:center;gap:8px;}
+  .sbtn:hover{border-color:var(--caramelo);}
+  .sbtn .ck{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.55;}
+  .sbtn[data-v="aprovado"].on{background:var(--aprovado);border-color:var(--aprovado);color:#fff;}
+  .sbtn[data-v="ajustar"].on{background:var(--ajustar);border-color:var(--ajustar);color:var(--escuro);}
+  .sbtn[data-v="refazer"].on{background:var(--refazer);border-color:var(--refazer);color:#fff;}
+  .sbtn[data-v="nao"].on{background:var(--nao);border-color:var(--nao);color:#fff;}
+  .sbtn.on .ck{opacity:1;}
+
+  .notes{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:560px){.notes{grid-template-columns:1fr;}}
+  .note{display:flex;flex-direction:column;gap:6px;}
+  .note label{font-family:'Montserrat';font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--caramelo);display:flex;align-items:center;gap:7px;}
+  .note label .ic{font-size:13px;}
+  .note textarea{font-family:'Plus Jakarta Sans';font-weight:300;font-size:13.5px;line-height:1.5;color:var(--marrom);background:var(--papel);border:1px solid var(--border);border-radius:12px;padding:13px 15px;resize:vertical;min-height:62px;outline:none;transition:border-color .16s;}
+  .note textarea:focus{border-color:var(--caramelo);}
+  .note textarea::placeholder{color:#b3a48d;}
+
+  /* item largo (carrossel/destaque) */
+  .item.wide{grid-template-columns:1fr;}
+  .strip{display:flex;gap:9px;overflow-x:auto;padding-bottom:8px;}
+  .strip::-webkit-scrollbar{height:7px;}
+  .strip::-webkit-scrollbar-thumb{background:#cbbda5;border-radius:8px;}
+  .strip .s{flex:none;width:128px;aspect-ratio:1080/1350;border-radius:9px;overflow:hidden;position:relative;background:var(--creme);container-type:inline-size;box-shadow:0 12px 26px -18px rgba(74,48,32,.45);}
+  .strip.story .s{aspect-ratio:1080/1920;width:104px;}
+  .strip .s .art{position:absolute;top:0;left:0;transform-origin:top left;transform:scale(calc(100cqw / 1080px));}
+  .strip .s .sn{position:absolute;bottom:5px;right:5px;background:rgba(42,36,32,.82);color:#E6CB93;font-size:9px;padding:2px 7px;border-radius:100px;}
+
+  /* bloco de copy */
+  .copy{background:var(--papel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .copy .lbl{font-family:'Montserrat';font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9a8a76;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+  .copy .txt{font-size:13px;line-height:1.55;color:#5f5347;}
+  .copy .hash{color:var(--bronze);font-size:12px;margin-top:9px;display:block;letter-spacing:.01em;}
+
+  /* poster de vídeo */
+  .vidthumb{display:grid;place-items:center;text-decoration:none;}
+  .vidthumb .play{width:62px;height:62px;border-radius:50%;background:rgba(230,203,147,.16);border:1px solid rgba(230,203,147,.5);display:grid;place-items:center;transition:.18s;}
+  .vidthumb:hover .play{background:rgba(230,203,147,.3);}
+  .watch{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--caramelo);text-decoration:none;display:inline-flex;align-items:center;gap:7px;}
+
+  /* modal resumo */
+  .modal{position:fixed;inset:0;z-index:60;background:rgba(42,36,32,.62);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:30px;}
+  .modal.open{display:flex;}
+  .modal .box{background:var(--offwhite);border-radius:20px;max-width:720px;width:100%;max-height:84vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.5);}
+  .modal .mh{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+  .modal .mh h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;color:var(--marrom);flex:1;}
+  .modal .mh .x{cursor:pointer;font-size:24px;color:#9a8a76;background:none;border:none;}
+  .modal textarea{flex:1;margin:0;border:none;border-radius:0;background:var(--branco);padding:22px 28px;font-family:'Plus Jakarta Sans';font-size:13px;line-height:1.6;color:var(--marrom);resize:none;outline:none;}
+  .modal .mf{padding:18px 28px;border-top:1px solid var(--border);display:flex;gap:12px;justify-content:flex-end;}
+  .modal .mf button{font-family:'Montserrat';font-size:12px;font-weight:600;letter-spacing:.06em;padding:13px 24px;border-radius:100px;border:1px solid var(--border);background:transparent;color:#7a5a34;cursor:pointer;}
+  .modal .mf button.primary{background:var(--caramelo);color:#fff;border-color:var(--caramelo);}
+
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--escuro);color:#E6CB93;padding:14px 26px;border-radius:100px;font-size:13px;transition:transform .3s;z-index:70;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="inner">
+    <span class="mark">sunya</span>
+    <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--corpo)">Revisão</span>
+    <div class="secs">
+      <a href="Central de Conteúdo.html">Central</a>
+      <a href="Conteúdo para Aprovação.html">Conteúdo</a>
+      <a href="#feed">Feed</a>
+      <a href="#carro">Carrosséis</a>
+      <a href="#stories">Stories</a>
+      <a href="#dest">Destaques</a>
+      <a href="#videos">Vídeos</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="glow"></div>
+  <div class="seal">sunya</div>
+  <h1>Revisão <em>peça por peça.</em></h1>
+  <p><b>Marque cada arte com Aprovado, Ajustar, Refazer ou Não aprovado.</b> Quando for Ajustar ou Refazer, escreva embaixo o que mudar, separando o que é da arte (visual, cor, layout) do que é da copy (texto, frase, legenda). Tudo fica salvo. No fim, toque em Copiar resumo para me enviar.</p>
+</div>
+
+<div class="wrap">
+  <div class="summary">
+    <div class="counts" id="counts"></div>
+    <div class="prog"><span id="prog" style="width:0%"></span></div>
+    <button class="btn" id="copyBtn">Copiar resumo</button>
+  </div>
+
+  <div id="feed"><div class="shead"><span class="n">01</span><h2>Feed · posts únicos</h2></div><div class="scount" id="feedCount"></div><div id="feedList"></div></div>
+  <div id="carro"><div class="shead"><span class="n">02</span><h2>Carrosséis</h2></div><div class="scount" id="carroCount"></div><div id="carroList"></div></div>
+  <div id="stories"><div class="shead"><span class="n">03</span><h2>Stories</h2></div><div class="scount" id="storyCount"></div><div id="storyList"></div></div>
+  <div id="dest"><div class="shead"><span class="n">04</span><h2>Destaques</h2></div><div class="scount" id="destCount"></div><div id="destList"></div></div>
+  <div id="videos"><div class="shead"><span class="n">05</span><h2>Vídeos e Motions</h2></div><div class="scount" id="videoCount"></div><div id="videoList"></div></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="mh"><h3>Resumo da revisão</h3><button class="x" id="closeModal">×</button></div>
+    <textarea id="resumo" readonly></textarea>
+    <div class="mf"><button id="closeModal2">Fechar</button><button class="primary" id="copyResumo">Copiar para enviar</button></div>
+  </div>
+</div>
+<div class="toast" id="toast">Resumo copiado</div>
+
+<script>
+/* =================================================================
+   SUNYA · CONTEÚDO PARA APROVAÇÃO  (pós reunião 10/06/2026)
+   Tudo aplicando o dicionário oficial + feedback da Elianna.
+   Linguagem: premium, elegante, emocional, simples e clara.
+   3 verbos da marca: proteger, libertar, profissionalizar.
+   Assinatura: "Feita por quem vive o bronze. De estúdio para estúdio."
+   ================================================================= */
+
+/* ---- referência rápida de linguagem (para o topo da página) ---- */
+const GUARDRAILS = {
+  usa:[
+    'Eliá · a funcionária digital',
+    'Parceira, profissional do bronze, empresária',
+    'Cliente (quem bronzeia)',
+    'Pérola · Âmbar · Cobre',
+    'Bronze 10% · Gold 15%',
+    'Anamnese, sinal, cabine, fototipo, pacote, UV, caixa',
+    'Cobrança no PIX',
+    'linda, [nome] (tratamento caloroso e elevado)',
+  ],
+  evita:[
+    'tia do bronze',
+    'balcão',
+    'escorre pelo ralo, ralo',
+    'estúdio de bairro, estúdio de carinho',
+    'atendimento redondo',
+    'correria',
+    'WhatsApp solto, conversa solta',
+    'fixar no caderno (falar de organização)',
+    'gata, amiga, amore',
+    'bot, robô, ficha clínica',
+  ],
+};
+
+const AFILIADAS = {
+  intro:'Plano de afiliadas definido na reunião. Comissão recorrente enquanto o estúdio indicado permanecer ativo. Pagamento no PIX.',
+  niveis:[
+    { nome:'Bronze', pct:'10', cond:'De 0 a 49 estúdios ativos', nota:'O ponto de partida. Toda afiliada começa aqui.' },
+    { nome:'Gold', pct:'15', cond:'Acima de 50 estúdios ativos', nota:'Para quem já tem rede no bronze.', destaque:true },
+  ],
+};
+
+/* =================================================================
+   FEED · posts únicos (1080x1350)
+   status: 'aprovado' | 'novo' | 'reescrito'
+   ================================================================= */
+const FEED = [
+
+  { pilar:'dor', tpl:'numero', theme:'dark', status:'aprovado',
+    eyebrow:'O custo invisível', num:'47',
+    title:'mensagens esperando resposta enquanto você <em>atende.</em>',
+    body:'Cada uma pode ser uma cliente que marca. Ou uma que desiste e vai pro estúdio da concorrente.',
+    legenda:'Você está com a luva na mão e o celular vibrando sem parar. Quantas dessas viram horário de verdade? A Sunya responde no seu tom enquanto você cuida da cliente que já está na cabine. Salva pra lembrar que dá pra ser diferente.',
+    hashtags:'#sunya #profissionaldobronze #bronzenatural #estudiodebronze' },
+
+  { pilar:'dor', tpl:'frase', theme:'light', status:'reescrito',
+    eyebrow:'A vida real do estúdio',
+    title:'A cliente marcou, não apareceu, e o horário <em>ficou vazio.</em>',
+    kicker:'fez falta no seu financeiro',
+    legenda:'Horário vago não volta. É tempo que você reservou e a cliente faltou. Tem como diminuir isso, e começa com lembrete e com o sinal. O sinal protege o seu tempo e salva o seu bolso. Salva esse lembrete.',
+    hashtags:'#sunya #falta #sinal #estudiodebronze' },
+
+  { pilar:'dor', tpl:'numero', theme:'dark', status:'aprovado',
+    eyebrow:'O custo invisível', num:'1',
+    title:'mês fechado <em>sem saber</em> se sobrou ou faltou.',
+    body:'Faturar muito e não enxergar o lucro é o cansaço que ninguém vê.',
+    legenda:'Trabalhar o mês inteiro e terminar sem saber o resultado é exaustivo. Você merece enxergar o seu lucro com clareza. Na Sunya, o caixa fecha sozinho e você vê quanto entrou, quanto saiu e quanto é seu. Salva esse lembrete.',
+    hashtags:'#sunya #caixa #lucro #empresariadobronze' },
+
+  { pilar:'dor', tpl:'frase', theme:'light', status:'aprovado',
+    eyebrow:'A vida real do estúdio',
+    title:'O dia de folga inteiro no WhatsApp. E ainda achando que <em>descansou.</em>',
+    kicker:'você merece um dia seu',
+    legenda:'Responder cliente de pijama não é folga. É trabalho disfarçado de descanso. A Eliá assume as respostas para o seu dia de folga ser seu de verdade. Comenta um sim se você se reconheceu.',
+    hashtags:'#sunya #descanso #elia #profissionaldobronze' },
+
+  { pilar:'voz', tpl:'prova', theme:'light', status:'aprovado',
+    eyebrow:'Voz de quem usa',
+    title:'O que muda quando a dona <em>respira.</em>',
+    body:'Mensagem real de parceira, publicada com autorização.',
+    chat:[['in','Menina, eu chorei. Pela primeira vez fechei o mês sabendo quanto entrou e quanto sobrou.'],['out','É isso que a gente quer para você 🤎']],
+    legenda:'A gente guarda cada mensagem dessas. Não é sobre o app. É sobre a dona que voltou a dormir tranquila. Marca uma profissional do bronze que merece ler isso.',
+    hashtags:'#sunya #vozdequemusa #estudiodebronze #empresariadobronze' },
+
+  { pilar:'voz', tpl:'prova', theme:'light', status:'aprovado',
+    eyebrow:'Voz de quem usa',
+    title:'A cliente elogiou o atendimento. Quem respondeu foi a <em>Eliá.</em>',
+    body:'Print real de parceira, publicado com autorização.',
+    chat:[['in','Amei a atenção de vocês, respondem rapidinho e super educados!'],['out','Que carinho 🤎 a gente cuida de cada detalhe pra você']],
+    legenda:'A Eliá é a funcionária digital que entende de bronze. Ela responde no seu tom, marca o horário, confirma a sessão e debita do pacote, 24 horas por dia. A cliente nem percebe que falou com ela. Só sente que foi bem cuidada. Marca uma colega que precisa conhecer.',
+    hashtags:'#sunya #elia #atendimento #bronzenatural' },
+
+  { pilar:'produto', tpl:'elia', theme:'dark', status:'reescrito',
+    eyebrow:'Conheça a Eliá',
+    title:'Ela responde a cliente <em>no seu tom.</em>',
+    body:'Calorosa, elegante, do jeito que você fala. Nunca um robô.',
+    chat:[['in','Oi, ainda tem horário pra sexta?'],['out','Oii, linda! Tenho 9h ou 11h na sexta. Qual fica melhor para você?']],
+    legenda:'A Eliá é a sua funcionária digital que entende de bronze. Ela conversa como você conversaria, com calor e classe, e você escolhe o tom: amigável, delicada, formal ou casual. Quer ver ela trabalhando? Link na bio.',
+    hashtags:'#sunya #elia #atendimentodigital #estudiodebronze' },
+
+  { pilar:'produto', tpl:'tela', theme:'dark', status:'reescrito',
+    eyebrow:'Por dentro da Sunya',
+    title:'A Eliá fechou um horário às <em>23h.</em> Você estava dormindo.',
+    body:'Enquanto o estúdio descansa, a agenda continua acontecendo.',
+    legenda:'A sua melhor funcionária não dorme e nunca esquece um nome. Ela confirma, agenda e manda o lembrete enquanto você descansa. Quer testar? São 7 dias grátis, link na bio.',
+    hashtags:'#sunya #elia #agenda #bronzenatural' },
+
+  { pilar:'mentalidade', tpl:'frase', theme:'dark', status:'aprovado',
+    eyebrow:'Mentalidade',
+    title:'Você é dona do estúdio ou <em>refém do WhatsApp?</em>',
+    kicker:'pensa nisso',
+    legenda:'Pergunta honesta. Se você não consegue tirar um fim de semana sem o estúdio parar, talvez o estúdio ainda não seja seu. A Sunya existe para libertar você dessa rotina. Comenta um sim se isso é pra você.',
+    hashtags:'#sunya #mentalidade #empresariadobronze #liberdade' },
+
+  { pilar:'mentalidade', tpl:'frase', theme:'light', status:'aprovado',
+    eyebrow:'Mentalidade',
+    title:'Trabalhar mais não é o mesmo que <em>faturar mais.</em>',
+    kicker:'leia de novo',
+    legenda:'Tem dona que dobra de horário e não dobra de lucro. O segredo não é fazer mais. É fazer com estrutura que protege o seu tempo. Salva e relê amanhã de manhã.',
+    hashtags:'#sunya #lucro #mentalidade #empresariadobronze' },
+
+  { pilar:'mentalidade', tpl:'frase', theme:'light', status:'reescrito',
+    eyebrow:'Mentalidade',
+    title:'Você não é uma profissional desorganizada. Você é uma <em>empresária do segmento estético.</em>',
+    kicker:'assuma o seu lugar',
+    legenda:'Os nomes importam porque mudam como você se vê e como o mundo te trata. Você dirige um negócio de beleza. A Sunya dá a estrutura à altura disso. Comenta um sim se isso é pra você.',
+    hashtags:'#sunya #empresariadobronze #profissionaldobronze #mentalidade' },
+
+  { pilar:'autoridade', tpl:'manifesto', theme:'dark', status:'aprovado',
+    eyebrow:'Por que existimos',
+    title:'A Sunya transforma quem cuida da pele dos outros em uma <em>empresária protegida, inteligente e livre.</em>',
+    kicker:'feita por quem vive o bronze',
+    legenda:'A Sunya não quer ser só um app na sua tela. Quer mudar como o Brasil enxerga quem trabalha com bronze. Proteger o seu trabalho, libertar o seu tempo e profissionalizar o seu estúdio. Esse é só o começo. Vem com a gente.',
+    hashtags:'#sunya #empresariadobronze #bronzenatural #estudiodebronze' },
+
+  { pilar:'comunidade', tpl:'ctaup', theme:'gold', status:'aprovado',
+    eyebrow:'Comece agora', num:'7',
+    title:'dias para sentir o estúdio <em>respirar.</em>',
+    body:'Sem cartão para começar. É só experimentar e ver.',
+    cta:'sunyapp.com',
+    legenda:'Você leu até aqui por um motivo. Talvez seja a hora de experimentar. São 7 dias grátis, sem cartão. O link está na bio esperando por você.',
+    hashtags:'#sunya #bronzenatural #estudiodebronze #comece' },
+
+];
+
+/* =================================================================
+   CARROSSÉIS · completos (todas as dobras)
+   cada slide é uma arte 1080x1350.
+   ================================================================= */
+const CARROSSEIS = [
+
+  { pilar:'educacao', titulo:'Como reduzir as faltas sem brigar com a cliente',
+    legenda:'Às vezes a cliente falta e não é por falta de respeito. Às vezes só faltou o lembrete. Esses quatro passos cabem na sua rotina e a Sunya cuida da parte chata por você: confirma, lembra e registra o sinal. Salva esse passo a passo e me conta qual desses você já faz.',
+    hashtags:'#sunya #falta #gestaodeestudio #bronzenatural',
+    slides:[
+      { tipo:'capa', eyebrow:'Educação do estúdio', theme:'light',
+        title:'Como reduzir as faltas <em>sem brigar</em> com a cliente.',
+        sub:'Quatro passos que cabem na sua rotina.' },
+      { tipo:'passo', n:'1', theme:'light', title:'Confirme <em>com carinho</em> um dia antes.',
+        body:'Uma mensagem gentil na véspera lembra a cliente e mostra cuidado.' },
+      { tipo:'passo', n:'2', theme:'light', title:'Combine o sinal <em>na hora de marcar.</em>',
+        body:'O sinal protege o seu tempo e compromete a cliente com o horário.' },
+      { tipo:'passo', n:'3', theme:'light', title:'Tenha uma política <em>clara e gentil.</em>',
+        body:'Regra combinada no começo evita o constrangimento depois.' },
+      { tipo:'passo', n:'4', theme:'light', title:'Deixe o lembrete <em>trabalhar por você.</em>',
+        body:'A Eliá envia o lembrete no tom certo, na hora certa, sem você lembrar.' },
+      { tipo:'fecho', theme:'dark', title:'Menos falta. Mais <em>agenda cheia.</em>',
+        sub:'A Sunya confirma, lembra e registra o sinal por você.', cta:'7 dias grátis · sunyapp.com' },
+    ]},
+
+  { pilar:'educacao', titulo:'Como cobrar sinal sem constrangimento',
+    legenda:'Cobrar sinal é o certo a se fazer. Ele protege o seu tempo e pode ser cobrado com elegância. Na Sunya, a cobrança é no PIX e o link faz o trabalho por você. Salva o passo a passo e adapta para o seu jeito de falar.',
+    hashtags:'#sunya #sinal #financeiro #estudiodebronze',
+    slides:[
+      { tipo:'capa', eyebrow:'Educação do estúdio', theme:'light',
+        title:'Como cobrar sinal <em>sem constrangimento.</em>',
+        sub:'O sinal protege o seu tempo. E pode ser cobrado com elegância.' },
+      { tipo:'passo', n:'1', theme:'light', title:'Trate como parte do <em>cuidado.</em>',
+        body:'O sinal não é desconfiança. É o que garante o horário guardado para ela.' },
+      { tipo:'passo', n:'2', theme:'light', title:'Explique <em>na hora de marcar.</em>',
+        body:'Combine sempre no começo, com naturalidade, antes de fechar o horário.' },
+      { tipo:'passo', n:'3', theme:'light', title:'Use uma frase <em>pronta e gentil.</em>',
+        body:'Tenha um texto carinhoso de sempre. Tira o peso e mantém a elegância.' },
+      { tipo:'passo', n:'4', theme:'light', title:'Deixe o link <em>fazer o trabalho.</em>',
+        body:'A cobrança no PIX cai no seu celular. Sem cara feia, sem cobrança chata.' },
+      { tipo:'fecho', theme:'dark', title:'Cobrar sinal é <em>respeito pelo seu horário.</em>',
+        sub:'Na Sunya, a cobrança é no PIX e o link faz tudo.', cta:'7 dias grátis · sunyapp.com' },
+    ]},
+
+  { pilar:'produto', titulo:'Da bagunça à organização',
+    legenda:'Nada contra a agenda manual. Ela foi fiel por anos. Mas existe um jeito mais leve agora, com tudo reunido num lugar só. Arrasta pro lado e vê a diferença. A Sunya organiza o atendimento, a agenda e o caixa por você.',
+    hashtags:'#sunya #organizacao #bronzenatural #estudiodebronze',
+    slides:[
+      { tipo:'capa', eyebrow:'Lado a lado', theme:'dark',
+        title:'De tudo espalhado a <em>tudo no lugar.</em>',
+        sub:'O que muda quando o estúdio para de viver em pedaços.' },
+      { tipo:'comparacao', theme:'light', antes:'Agenda em vários lugares', depois:'Uma agenda só, no seu celular' },
+      { tipo:'comparacao', theme:'light', antes:'Cliente sem resposta', depois:'Atendimento no seu tom, na hora' },
+      { tipo:'comparacao', theme:'light', antes:'Cobrança chata e esquecida', depois:'Sinal no PIX, automático' },
+      { tipo:'comparacao', theme:'light', antes:'Contas de cabeça', depois:'O caixa do mês fechando sozinho' },
+      { tipo:'fecho', theme:'dark', title:'O seu trabalho, <em>reunido num lugar só.</em>',
+        sub:'Do jeito que sempre devia ter sido.', cta:'7 dias grátis · sunyapp.com' },
+    ]},
+
+  { pilar:'educacao', titulo:'As perguntas que você responde mil vezes',
+    legenda:'Pega a cor na primeira sessão? Quantas sessões para fixar a marquinha? Qual o valor do bronze? Você já respondeu isso mil vezes. A Eliá responde no seu tom, sempre, e libera você para cuidar de quem está na cabine. Salva e descansa os dedos.',
+    hashtags:'#sunya #elia #atendimento #bronzenatural',
+    slides:[
+      { tipo:'capa', eyebrow:'A rotina real', theme:'dark',
+        title:'As perguntas que você responde <em>mil vezes.</em>',
+        sub:'Todo dia, as mesmas. E sempre tomando o seu tempo.' },
+      { tipo:'pergunta', theme:'light', q:'Pega a cor na primeira sessão?' },
+      { tipo:'pergunta', theme:'light', q:'Quantas sessões para fixar a marquinha?' },
+      { tipo:'pergunta', theme:'light', q:'Qual o valor do bronze?' },
+      { tipo:'fecho', theme:'dark', title:'A Eliá responde <em>no seu tom.</em>',
+        sub:'O tempo que some nas mesmas respostas vira tempo para cuidar.', cta:'7 dias grátis · sunyapp.com' },
+    ]},
+
+  { pilar:'mentalidade', titulo:'Como saber se o seu estúdio dá lucro de verdade',
+    legenda:'Muita dona confunde caixa cheio com lucro. Esse passo a passo simples mostra o número que importa de verdade. Na Sunya, o caixa fecha sozinho e você acompanha tudo sem somar nota. Salva esta conta e faça a sua.',
+    hashtags:'#sunya #lucro #financeiro #empresariadobronze',
+    slides:[
+      { tipo:'capa', eyebrow:'Mentalidade de empresária', theme:'light',
+        title:'Como saber se o seu estúdio <em>dá lucro de verdade.</em>',
+        sub:'Faturamento não é lucro. Aprenda a enxergar o que sobra.' },
+      { tipo:'passo', n:'1', theme:'light', title:'Some tudo que <em>entra no mês.</em>',
+        body:'Todo o caixa do estúdio, sessão por sessão, pacote por pacote.' },
+      { tipo:'passo', n:'2', theme:'light', title:'Tire os custos <em>fixos e variáveis.</em>',
+        body:'Aluguel, produtos, energia, tudo o que o estúdio consome para girar.' },
+      { tipo:'passo', n:'3', theme:'light', title:'Inclua o seu <em>próprio salário.</em>',
+        body:'O seu trabalho tem valor. Ele entra na conta antes do lucro.' },
+      { tipo:'passo', n:'4', theme:'light', title:'O que sobra <em>é lucro.</em>',
+        body:'Esse é o número que importa. Não o caixa cheio, o que sobra de verdade.' },
+      { tipo:'fecho', theme:'dark', title:'O número que <em>importa de verdade.</em>',
+        sub:'Na Sunya, o caixa fecha sozinho e você acompanha sem somar nota.', cta:'7 dias grátis · sunyapp.com' },
+    ]},
+
+];
+
+/* =================================================================
+   STORIES · avulsos (1080x1920)
+   ================================================================= */
+const STORIES = [
+  { tpl:'frase', theme:'dark', eyebrow:'Lembrete do dia',
+    title:'Você merece um dia de folga <em>que seja seu.</em>',
+    legenda:'No seu dia de folga, a Eliá responde por você. Marca uma colega que precisa ouvir isso.',
+    hashtags:'#sunya #descanso #elia #profissionaldobronze' },
+  { tpl:'cta', theme:'gold', eyebrow:'Comece agora', num:'7',
+    title:'dias para sentir o estúdio <em>respirar.</em>',
+    cta:'Arrasta pra cima',
+    legenda:'7 dias grátis, sem cartão. Teste agora e sinta a diferença. Link na bio.',
+    hashtags:'#sunya #bronzenatural #estudiodebronze #comece' },
+  { tpl:'frase', theme:'light', eyebrow:'Mentalidade',
+    title:'De bronzeadora <em>a empresária.</em>',
+    legenda:'O caminho começa com organização. Salva e compartilha com uma profissional do bronze.',
+    hashtags:'#sunya #empresariadobronze #mentalidade #profissionaldobronze' },
+  { tpl:'frase', theme:'dark', eyebrow:'A pergunta da semana',
+    title:'Você é dona do estúdio ou <em>refém do WhatsApp?</em>',
+    legenda:'Responde na enquete do story e marca uma colega para responder também.',
+    hashtags:'#sunya #mentalidade #empresariadobronze #estudiodebronze' },
+  { tpl:'frase', theme:'light', eyebrow:'Proteja o seu estúdio',
+    title:'Anamnese não é burocracia. <em>É blindagem.</em>',
+    legenda:'Ficha assinada protege você e a cliente. Na Sunya, a anamnese é digital. Envia para uma colega.',
+    hashtags:'#sunya #anamnese #seguranca #bronzenatural' },
+  { tpl:'frase', theme:'dark', eyebrow:'O número que importa',
+    title:'Faturamento não é lucro. <em>Olhe o que sobra.</em>',
+    legenda:'O caixa da Sunya mostra o número que importa de verdade. Teste agora, link na bio.',
+    hashtags:'#sunya #lucro #financeiro #empresariadobronze' },
+  { tpl:'cta', theme:'gold', eyebrow:'Diário Sunya', num:'4',
+    title:'trilhas de conteúdo para a <em>dona de estúdio.</em>',
+    cta:'Leia no blog',
+    legenda:'Do cuidado com a pele à gestão do negócio. Leia agora no Diário Sunya, link na bio.',
+    hashtags:'#sunya #diariosunya #bronzenatural #estudiodebronze' },
+];
+
+/* =================================================================
+   DESTAQUES · sequências corrigidas (1080x1920)
+   ================================================================= */
+const DESTAQUES = [
+  { key:'sol', nome:'Comece aqui',
+    legenda:'Tudo o que a Sunya é, em quatro telas. Comece os 7 dias grátis, sem cartão. Link na bio e envia para uma colega que precisa conhecer.',
+    hashtags:'#sunya #estudiodebronze #bronzenatural #empresariadobronze', slides:[
+    { tpl:'capa', theme:'dark', eyebrow:'O que é a Sunya',
+      title:'A funcionária digital que entende de <em>bronze.</em>',
+      sub:'Não é um sistema genérico. É uma solução criada por quem vive a rotina do bronze natural.' },
+    { tpl:'bullets', theme:'light', eyebrow:'Para quem é',
+      title:'Para a dona de estúdio que decidiu virar <em>empresária.</em>',
+      lista:['Trabalha com bronze natural','Busca por organização','Quer tempo de volta para a própria vida'] },
+    { tpl:'bullets', theme:'light', check:true, eyebrow:'O que resolve',
+      title:'O estúdio inteiro <em>num lugar só.</em>',
+      lista:['Menos tempo no WhatsApp','Agenda mais cheia e organizada','Caixa do mês fechado sem planilha','Seu dia de folga livre'] },
+    { tpl:'cta', theme:'gold', eyebrow:'Como começar', num:'7', unit:'dias grátis',
+      title:'Sem cartão. Você sente a Sunya por dentro e decide com calma.', cta:'sunyapp.com' },
+  ]},
+  { key:'chat', nome:'A Eliá',
+    legenda:'A funcionária digital que entende de bronze, no seu tom, 24 horas. Teste agora, link na bio.',
+    hashtags:'#sunya #elia #atendimentodigital #bronzenatural', slides:[
+    { tpl:'elia', theme:'dark', eyebrow:'A funcionária digital',
+      title:'A Eliá responde a cliente <em>no seu tom.</em>',
+      sub:'Calorosa, elegante, 24 horas. Mesmo quando você para.',
+      chat:[['in','Oi, tem horário para amanhã?'],['out','Oii, linda! Tenho 8h ou 10h. Qual fica melhor para você?']] },
+    { tpl:'audio', theme:'dark', eyebrow:'Áudio virando resposta',
+      title:'A cliente manda áudio. A Eliá <em>ouve e responde.</em>',
+      sub:'Áudio do WhatsApp entendido e respondido em texto, na hora.' },
+    { tpl:'tones', theme:'light', eyebrow:'Os quatro tons',
+      title:'Você escolhe o jeito da <em>sua Eliá.</em>',
+      tones:['Amigável','Delicada','Formal','Casual'] },
+    { tpl:'cta', theme:'gold', eyebrow:'Liga e desliga', num:'24', unit:'horas no seu ritmo',
+      title:'Você decide quando ela responde sozinha e quando a conversa volta para você.', cta:'sunyapp.com' },
+  ]},
+  { key:'transforma', nome:'Dona ou funcionária',
+    legenda:'A pergunta que muda tudo. A Sunya te devolve o comando do seu estúdio. Salva e marca uma colega.',
+    hashtags:'#sunya #mentalidade #empresariadobronze #estudiodebronze', slides:[
+    { tpl:'capa', theme:'dark', eyebrow:'A pergunta que muda tudo',
+      title:'Você é dona do estúdio ou <em>funcionária dele?</em>',
+      sub:'A tese da Sunya em uma pergunta. Responda com sinceridade.' },
+    { tpl:'bullets', theme:'light', eyebrow:'Os sinais',
+      title:'Talvez o estúdio ainda <em>não seja seu.</em>',
+      lista:['Você responde WhatsApp às 23h','Não tira um dia de folga de verdade','Não sabe quanto lucrou no mês','O estúdio para quando você para'] },
+    { tpl:'frase', theme:'dark', eyebrow:'A diferença',
+      title:'Dona decide. Funcionária <em>só executa.</em>' },
+    { tpl:'cta', theme:'gold', eyebrow:'A virada', num:'1', unit:'decisão',
+      title:'A Sunya te devolve o comando do seu próprio estúdio.', cta:'sunyapp.com' },
+  ]},
+  { key:'duvida', nome:'Diário Sunya',
+    legenda:'As quatro trilhas de conteúdo para a dona de estúdio. Leia agora, link na bio.',
+    hashtags:'#sunya #diariosunya #crescimentodoestudio #bronzenatural', slides:[
+    { tpl:'capa', theme:'dark', eyebrow:'O blog da marca',
+      title:'Diário <em>Sunya.</em>',
+      sub:'O conteúdo de quem leva o bronze a sério. Para atender melhor e crescer com estrutura.' },
+    { tpl:'bullets', theme:'light', eyebrow:'As quatro trilhas',
+      title:'Onde a dona de estúdio <em>aprende e cresce.</em>',
+      lista:['Autoridade Técnica','Crescimento do Estúdio','Mentalidade de Empresária','Manual da Dona de Estúdio'] },
+    { tpl:'cta', theme:'gold', eyebrow:'Leia agora', num:'4', unit:'trilhas',
+      title:'Do cuidado com a pele à gestão do seu negócio.', cta:'sunyapp.com/diario' },
+  ]},
+  { key:'coracao', nome:'Segurança',
+    legenda:'Bronze com segurança começa na anamnese. Conteúdo de utilidade pública. Salva e envia para uma colega.',
+    hashtags:'#sunya #anamnese #seguranca #profissionaldobronze', slides:[
+    { tpl:'capa', theme:'dark', eyebrow:'Autoridade técnica',
+      title:'Bronze com segurança começa na <em>anamnese.</em>',
+      sub:'Conteúdo de utilidade pública para o nosso nicho.' },
+    { tpl:'bullets', theme:'light', check:true, eyebrow:'O protocolo',
+      title:'O que toda profissional do bronze <em>precisa fazer.</em>',
+      lista:['Pergunte sempre na anamnese','Oriente a cliente a falar com o médico','Registre tudo na ficha assinada','Na dúvida, a segurança vem primeiro'] },
+    { tpl:'frase', theme:'dark', eyebrow:'Lembre-se',
+      title:'A anamnese não é papelada. <em>É blindagem.</em>' },
+    { tpl:'cta', theme:'gold', eyebrow:'Na Sunya', num:'1', unit:'ficha digital',
+      title:'A anamnese digital protege você juridicamente em cada sessão.', cta:'sunyapp.com' },
+  ]},
+  { key:'aperto', nome:'Embaixadoras',
+    legenda:'O programa que representa quem leva o bronze a sério. Em breve, seleção aberta. Comenta eu quero.',
+    hashtags:'#sunya #embaixadorasunya #comunidade #empresariadobronze', slides:[
+    { tpl:'capa', theme:'dark', eyebrow:'Programa Embaixadora',
+      title:'Representa quem leva o bronze <em>a sério.</em>',
+      sub:'Mais que afiliada. A profissional respeitada do mercado que usa Sunya.' },
+    { tpl:'bullets', theme:'light', check:true, eyebrow:'O que você ganha',
+      title:'Status, voz e <em>reconhecimento.</em>',
+      lista:['Selo oficial Embaixadora Sunya','Destaque no perfil da marca','Acesso antecipado a novidades','Comunidade e prioridade no suporte'] },
+    { tpl:'cta', theme:'gold', eyebrow:'Seleção', num:'∞', unit:'comissão recorrente',
+      title:'Poucas, escolhidas e reconhecidas. Em breve, seleção aberta.', cta:'Quero ser embaixadora' },
+  ]},
+];
+
+/* =================================================================
+   VÍDEOS E MOTIONS · para revisão (arquivos HTML reproduzíveis)
+   ================================================================= */
+const VIDEOS = [
+  { arquivo:'Motion Dona ou Funcionária.html', fmt:'Vídeo 9:16 · 85s', tema:'#1E1812',
+    titulo:'Dona ou <em>Funcionária</em>',
+    legenda:'A pergunta que resume a Sunya, dos sinais ao comando de volta. Film de marca para o feed e ads. Assista e me diga o que acha.',
+    hashtags:'#sunya #mentalidade #empresariadobronze #estudiodebronze' },
+  { arquivo:'Motion Funcionalidades.html', fmt:'Vídeo 16:9 · 42s', tema:'#2A2420',
+    titulo:'Motion das <em>Funcionalidades</em>',
+    legenda:'O app por dentro: agenda, Eliá, sessão, caixa e crescimento. Para a página e o YouTube. Teste agora, link na bio.',
+    hashtags:'#sunya #funcionalidades #bronzenatural #estudiodebronze' },
+  { arquivo:'Motion Apresentando o App.html', fmt:'Vídeo 9:16 · 34s', tema:'#2A2420',
+    titulo:'Apresentando <em>o App</em>',
+    legenda:'Da dor do WhatsApp lotado à Eliá, agenda, caixa e o convite. Pronto para Reel. Envia para uma colega.',
+    hashtags:'#sunya #elia #estudiodebronze #bronzenatural' },
+  { arquivo:'Motion Conceito.html', fmt:'Vídeo 9:16 · 16s', tema:'#160F0B',
+    titulo:'Conceito · <em>A Pele Lembra</em>',
+    legenda:'Film editorial cinético, sem mockup. A Sunya mais glamour. Direção para aprovar ou descartar.',
+    hashtags:'#sunya #bronzenatural #marca #beleza' },
+  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+    titulo:'Reel · <em>47 mensagens</em>',
+    legenda:'A dor do WhatsApp lotado e a Eliá assumindo. Gancho, prova e convite em 15s. Teste agora, link na bio.',
+    hashtags:'#sunya #elia #estudiodebronze #profissionaldobronze' },
+  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+    titulo:'Reel · <em>Do caderno ao sistema</em>',
+    legenda:'Nada contra a agenda manual, ela foi fiel. Mas existe um jeito mais leve agora. Salva e envia para uma colega.',
+    hashtags:'#sunya #organizacao #bronzenatural #estudiodebronze' },
+  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+    titulo:'Reel · <em>Não dorme, não esquece</em>',
+    legenda:'A Eliá fechando horário às 23h, enquanto você descansa. Quer testar? 7 dias grátis, link na bio.',
+    hashtags:'#sunya #elia #agenda #bronzenatural' },
+  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 15s', tema:'#231E1A',
+    titulo:'Reel · <em>O caixa fecha sozinho</em>',
+    legenda:'Do mês no escuro ao lucro claro. O caixa da Sunya fecha sozinho. Teste agora e veja o número que importa.',
+    hashtags:'#sunya #caixa #lucro #empresariadobronze' },
+  { arquivo:'Reels Sunya.html', fmt:'Reel 9:16 · 14s', tema:'#F6F0E6',
+    titulo:'Reel · <em>De bronzeadora a empresária</em>',
+    legenda:'O manifesto da marca em movimento. Proteger, libertar, profissionalizar. Salva e marca uma colega.',
+    hashtags:'#sunya #empresariadobronze #mentalidade #estudiodebronze' },
+];
+
+window.SUNYA_AP = { GUARDRAILS, AFILIADAS, FEED, CARROSSEIS, STORIES, DESTAQUES, VIDEOS };
+
+</script>
+<script>
+/* =================================================================
+   SUNYA · RENDER da página de aprovação
+   Produz HTML de artes 1080x1350 (feed/carrossel) e 1080x1920 (story).
+   Estilo fiel ao Design System: Instrument Serif + Plus Jakarta,
+   creme/escuro/dourado, selo e assinatura da marca.
+   ================================================================= */
+(function(){
+
+  const _FILE_MAP = {"Motion Dona ou Funcionária.html":"motion-dona.html","Motion Funcionalidades.html":"motion-features.html","Motion Apresentando o App.html":"motion-app.html","Motion Conceito.html":"motion-conceito.html","Reels Sunya.html":"reels.html"};
+  function buildWatchUrl(arquivo) {
+    var base = 'https://venomwapp.github.io/sunya-revisao/';
+    var name = _FILE_MAP[arquivo] || arquivo;
+    return base + name;
+  }
+
+  const C = {
+    creme:'#F6F0E6', papel:'#FBF7F0', areia:'#E8D8C0',
+    escuro:'#2A2420', escuro2:'#231E1A',
+    caramelo:'#8B5A2B', bronze:'#B0824F', italico:'#8A6438',
+    dourado:'#C9A35B', douradoClaro:'#E6CB93',
+    marrom:'#3C2A1C', corpo:'#6E6155', corpoClaro:'#C8B79B', linha:'#E7DECF',
+  };
+  const SIG="'Instrument Serif', serif";
+  const DISP="'Cormorant Garamond', serif";
+  const BODY="'Plus Jakarta Sans', sans-serif";
+  const LABEL="'Montserrat', sans-serif";
+  const ctx = t => t==='dark';
+
+  function sun(s,color){return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"></path></svg>`;}
+  function pearl(size){return `<div style="position:relative;width:${size}px;height:${size}px"><div style="position:absolute;inset:6% 10% 10% 6%;border-radius:50%;background:radial-gradient(closest-side, rgba(201,162,95,.30), rgba(232,212,196,.45))"></div><div style="position:absolute;inset:10% 6% 6% 10%;border-radius:50%;background:radial-gradient(circle at 38% 34%, #fffdf8, #fbf4e9 48%, #ecd9c0 100%);box-shadow:inset -6px -8px 18px rgba(156,107,52,.22), inset 4px 5px 14px rgba(255,255,255,.7)"></div></div>`;}
+  function eyebrow(text,t,center){const c=ctx(t)?C.dourado:C.caramelo;return `<div style="display:flex;align-items:center;gap:18px;${center?'justify-content:center;':''}font-family:${LABEL};font-size:23px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:${c}"><span style="width:46px;height:1px;background:${c};opacity:.7"></span>${text}</div>`;}
+  function seal(t){const c=ctx(t)?C.douradoClaro:C.caramelo;return `<div style="font-family:${DISP};letter-spacing:.6em;padding-left:.6em;text-transform:lowercase;color:${c};font-size:30px">sunya</div>`;}
+  function sign(t){const c=ctx(t)?C.corpoClaro:'#9a866c';return `<div style="font-family:${BODY};font-weight:300;font-size:20px;letter-spacing:.02em;color:${c}">Feita por quem vive o bronze.</div>`;}
+  function disp(html,t,size,max){const tc=ctx(t)?C.creme:C.marrom;const ec=ctx(t)?C.douradoClaro:C.italico;return `<div style="font-family:${SIG};font-size:${size}px;line-height:1.06;letter-spacing:-.5px;color:${tc};${max?`max-width:${max}px;`:''}">${html.replace(/<em>/g,`<em style="font-style:italic;color:${ec}">`)}</div>`;}
+  function bodyTxt(html,t,size,max){const c=ctx(t)?C.corpoClaro:C.corpo;return `<div style="font-family:${BODY};font-weight:300;font-size:${size}px;line-height:1.6;color:${c};${max?`max-width:${max}px;`:''}">${html}</div>`;}
+  function ctaPill(text,t){return `<div style="display:inline-flex;align-items:center;gap:14px;background:${ctx(t)?C.dourado:C.caramelo};color:${ctx(t)?C.escuro:'#FBF7F0'};font-family:${BODY};font-weight:500;font-size:26px;padding:26px 46px;border-radius:100px">${text} <span>↗</span></div>`;}
+
+  function chatBlock(chat, fs){
+    fs=fs||32;
+    return `<div style="display:flex;flex-direction:column;gap:22px;width:100%">`+chat.map(([d,txt])=>{
+      const inn=d==='in';
+      return `<div style="align-self:${inn?'flex-start':'flex-end'};max-width:80%;background:${inn?'#F5EDDF':'#F1E2C8'};color:${inn?'#5f5347':'#6b4f2c'};font-family:${BODY};font-weight:300;font-size:${fs}px;line-height:1.42;padding:28px 34px;border-radius:34px;border-bottom-${inn?'left':'right'}-radius:12px">${txt}</div>`;
+    }).join('')+`</div>`;
+  }
+
+  const wrapV = (inner,pad)=>`<div style="position:absolute;inset:0;padding:${pad||'150px 110px'};display:flex;flex-direction:column;justify-content:center">${inner}</div>`;
+  const wrapC = (inner,pad)=>`<div style="position:absolute;inset:0;padding:${pad||'150px 110px'};display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">${inner}</div>`;
+  function bg(t){return ctx(t)?C.escuro:C.papel;}
+
+  /* ---------- FEED templates (1080x1350) ---------- */
+  const F = {};
+  F.numero=(p)=>wrapV(`
+    ${eyebrow(p.eyebrow,p.theme)}
+    <div style="font-family:${SIG};font-style:italic;font-size:360px;line-height:.85;color:${C.dourado};margin:10px 0 -10px">${p.num}</div>
+    ${disp(p.title,p.theme,76,720)}
+    ${p.body?`<div style="margin-top:36px">${bodyTxt(p.body,p.theme,28,640)}</div>`:''}
+    <div style="position:absolute;left:110px;bottom:100px">${seal(p.theme)}</div>`);
+  F.frase=(p)=>`<span style="position:absolute;top:130px;left:50%;transform:translateX(-50%);width:80px;height:2px;background:${C.dourado}"></span>`+wrapC(`
+    ${p.eyebrow?`<div style="margin-bottom:40px">${eyebrow(p.eyebrow,p.theme,true)}</div>`:''}
+    ${disp(p.title,p.theme,88,800)}
+    ${p.kicker?`<div style="font-family:${DISP};font-style:italic;font-size:64px;color:${ctx(p.theme)?C.douradoClaro:C.italico};margin-top:30px">${p.kicker}</div>`:''}
+    <div style="position:absolute;bottom:104px;left:50%;transform:translateX(-50%)">${seal(p.theme)}</div>`);
+  F.prova=(p)=>wrapV(`
+    ${eyebrow(p.eyebrow,p.theme)}
+    <div style="margin-top:26px">${disp(p.title,p.theme,62,760)}</div>
+    <div style="background:#FBF7F0;border:1px solid #EEE4D4;border-radius:40px;padding:46px;margin-top:50px;box-shadow:0 40px 90px -50px rgba(74,48,32,.4)">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px">${sun(30,C.bronze)}<span style="font-family:${DISP};letter-spacing:.16em;color:#7a5a34;font-size:28px">sunya · agenda</span></div>
+      ${chatBlock(p.chat,30)}
+    </div>
+    ${p.body?`<div style="margin-top:30px;font-family:${BODY};font-weight:300;font-size:21px;color:#9a866c">${p.body}</div>`:''}
+    <div style="position:absolute;right:110px;bottom:96px">${seal(p.theme)}</div>`);
+  F.elia=(p)=>`<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 60%, rgba(224,197,136,.16), transparent 60%)"></div>`+wrapV(`
+    ${eyebrow(p.eyebrow,p.theme)}
+    <div style="margin:26px 0 22px">${disp(p.title,p.theme,72,720)}</div>
+    ${p.body?bodyTxt(p.body,p.theme,26,640):''}
+    <div style="margin-top:44px">${chatBlock(p.chat,32)}</div>
+    <div style="display:flex;align-items:center;gap:14px;margin-top:40px;color:${C.douradoClaro}">${sun(30,C.douradoClaro)}<span style="font-family:${DISP};letter-spacing:.18em;font-size:26px">sunya · agenda</span></div>`);
+  F.tela=(p)=>wrapV(`
+    ${eyebrow(p.eyebrow,p.theme)}
+    <div style="margin:24px 0 26px">${disp(p.title,p.theme,64,640)}</div>
+    ${p.body?bodyTxt(p.body,p.theme,26,600):''}
+    <div style="display:flex;justify-content:center;margin-top:46px">
+      <div style="width:420px;border-radius:44px;background:rgba(224,197,136,.08);border:1px solid rgba(224,197,136,.28);padding:40px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">${sun(26,C.douradoClaro)}<span style="font-family:${DISP};letter-spacing:.16em;color:${C.douradoClaro};font-size:24px">sunya · agenda</span><span style="margin-left:auto;color:#8a7f70;font-size:20px">23h</span></div>
+        <div style="font-family:${BODY};font-weight:300;color:#EDE4D4;font-size:27px;line-height:1.45">Novo horário confirmado com a Camila para sexta, 9h. Lembrete já enviado 🤎</div>
+      </div>
+    </div>
+    <div style="position:absolute;right:110px;bottom:96px">${seal(p.theme)}</div>`);
+  F.manifesto=(p)=>`<div style="position:absolute;inset:54px;border:1px solid rgba(224,197,136,.22)"></div>`+wrapC(`
+    ${eyebrow(p.eyebrow,p.theme,true)}
+    <div style="margin-top:36px">${disp(p.title,p.theme,68,800)}</div>
+    ${p.kicker?`<div style="font-family:${DISP};font-style:italic;font-size:52px;color:${C.douradoClaro};margin-top:30px">${p.kicker}</div>`:''}
+    <div style="position:absolute;bottom:104px;left:50%;transform:translateX(-50%)">${seal(p.theme)}</div>`);
+  F.ctaup=(p)=>`<div style="position:absolute;inset:0;background:${C.dourado}"></div><div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,250,242,.18) 2px, transparent 2px);background-size:42px 42px;opacity:.5"></div>`+wrapC(`
+    <div style="font-family:${LABEL};font-size:22px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:#3a2c18;position:relative">${p.eyebrow}</div>
+    <div style="font-family:${SIG};font-style:italic;font-size:300px;line-height:1;color:#3a2c18;margin:18px 0;position:relative">${p.num}</div>
+    <div style="font-family:${SIG};font-size:72px;line-height:1.1;color:${C.escuro};max-width:720px;position:relative">${p.title.replace(/<em>/g,`<em style="font-style:italic">`)}</div>
+    ${p.body?`<div style="font-family:${BODY};font-weight:300;color:#4a3a22;font-size:27px;margin-top:32px;max-width:600px;position:relative">${p.body}</div>`:''}
+    <div style="margin-top:48px;position:relative"><div style="display:inline-flex;align-items:center;gap:14px;background:${C.escuro};color:#F6E9CC;font-family:${BODY};font-weight:500;font-size:26px;padding:26px 50px;border-radius:100px">${p.cta||'sunyapp.com'} <span>↗</span></div></div>`);
+
+  function renderFeed(p){ return `<div class="art" style="width:1080px;height:1350px;position:relative;overflow:hidden;background:${p.theme==='gold'?C.dourado:bg(p.theme)}">${(F[p.tpl]||F.frase)(p)}</div>`; }
+
+  /* ---------- CARROSSEL slides (1080x1350) ---------- */
+  function slideCapa(s){return `<div class="art" style="width:1080px;height:1350px;position:relative;background:${bg(s.theme)}">`+wrapC(`
+    ${eyebrow(s.eyebrow,s.theme,true)}
+    <div style="margin-top:40px">${disp(s.title,s.theme,84,820)}</div>
+    ${s.sub?`<div style="margin-top:40px">${bodyTxt(s.sub,s.theme,30,640)}</div>`:''}
+    <div style="position:absolute;bottom:96px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px">${seal(s.theme)}<span style="color:${ctx(s.theme)?C.corpoClaro:'#b0a187'};font-size:22px">arrasta →</span></div>`)+`</div>`;}
+  function slidePasso(s){return `<div class="art" style="width:1080px;height:1350px;position:relative;background:${bg(s.theme)}">`+wrapV(`
+    <div style="font-family:${SIG};font-style:italic;font-size:200px;line-height:.8;color:${C.dourado};opacity:.9">${s.n}</div>
+    <div style="margin:30px 0 24px">${disp(s.title,s.theme,72,800)}</div>
+    ${bodyTxt(s.body,s.theme,30,720)}
+    <div style="position:absolute;right:110px;bottom:96px">${seal(s.theme)}</div>`)+`</div>`;}
+  function slideComp(s){return `<div class="art" style="width:1080px;height:1350px;position:relative;background:${bg(s.theme)}">`+wrapC(`
+    <div style="width:100%;max-width:780px">
+      <div style="font-family:${LABEL};font-size:20px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#b0a187;margin-bottom:18px">Antes</div>
+      <div style="font-family:${DISP};font-size:58px;color:#9a8a76;line-height:1.1">${s.antes}</div>
+      <div style="margin:48px 0;color:${C.dourado};font-size:60px">↓</div>
+      <div style="font-family:${LABEL};font-size:20px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:${C.caramelo};margin-bottom:18px">Depois</div>
+      <div style="font-family:${SIG};font-style:italic;font-size:74px;color:${C.italico};line-height:1.08">${s.depois}</div>
+    </div>
+    <div style="position:absolute;bottom:96px;left:50%;transform:translateX(-50%)">${seal(s.theme)}</div>`)+`</div>`;}
+  function slidePergunta(s){return `<div class="art" style="width:1080px;height:1350px;position:relative;background:${bg(s.theme)}">`+wrapC(`
+    <div style="font-family:${SIG};font-style:italic;color:${C.dourado};font-size:160px;line-height:.6;margin-bottom:10px">"</div>
+    <div style="font-family:${DISP};font-size:80px;line-height:1.18;color:${C.marrom};max-width:780px">${s.q}</div>
+    <div style="margin-top:50px;font-family:${BODY};font-weight:300;font-size:26px;color:#9a866c">a cliente pergunta. todo dia.</div>
+    <div style="position:absolute;bottom:96px;left:50%;transform:translateX(-50%)">${seal(s.theme)}</div>`)+`</div>`;}
+  function slideFecho(s){return `<div class="art" style="width:1080px;height:1350px;position:relative;background:${bg(s.theme)}"><div style="position:absolute;inset:54px;border:1px solid rgba(224,197,136,.2)"></div>`+wrapC(`
+    ${disp(s.title,s.theme,80,800)}
+    ${s.sub?`<div style="margin-top:34px">${bodyTxt(s.sub,s.theme,28,640)}</div>`:''}
+    ${s.cta?`<div style="margin-top:50px">${ctaPill(s.cta,s.theme)}</div>`:''}
+    <div style="position:absolute;bottom:90px;left:50%;transform:translateX(-50%)">${sign(s.theme)}</div>`)+`</div>`;}
+  function renderSlide(s){
+    if(s.tipo==='capa') return slideCapa(s);
+    if(s.tipo==='passo') return slidePasso(s);
+    if(s.tipo==='comparacao') return slideComp(s);
+    if(s.tipo==='pergunta') return slidePergunta(s);
+    return slideFecho(s);
+  }
+
+  /* ---------- STORY / DESTAQUE templates (1080x1920) ---------- */
+  const wrapVS=(inner)=>`<div style="position:absolute;inset:0;padding:210px 110px 150px;display:flex;flex-direction:column;justify-content:center">${inner}</div>`;
+  const wrapCS=(inner)=>`<div style="position:absolute;inset:0;padding:200px 110px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">${inner}</div>`;
+  const S = {};
+  S.frase=(s)=>wrapCS(`${eyebrow(s.eyebrow,s.theme,true)}<div style="margin-top:44px">${disp(s.title,s.theme,96,840)}</div><div style="position:absolute;bottom:130px;left:50%;transform:translateX(-50%)">${seal(s.theme)}</div>`);
+  S.capa=(s)=>wrapCS(`${eyebrow(s.eyebrow,s.theme,true)}<div style="margin-top:44px">${disp(s.title,s.theme,98,840)}</div>${s.sub?`<div style="margin-top:44px">${bodyTxt(s.sub,s.theme,30,680)}</div>`:''}<div style="position:absolute;bottom:130px;left:50%;transform:translateX(-50%)">${seal(s.theme)}</div>`);
+  S.bullets=(s)=>{const rows=s.lista.map((it,i)=>`<div style="display:flex;align-items:baseline;gap:28px;padding:30px 0;border-top:1px solid ${ctx(s.theme)?'rgba(224,197,136,.16)':C.linha}">${s.check?`<span style="color:${C.dourado};font-size:38px;flex:none">✓</span>`:`<span style="font-family:${SIG};font-style:italic;color:${C.dourado};font-size:46px;width:46px;flex:none">${i+1}</span>`}<span style="font-family:${BODY};font-weight:300;font-size:36px;color:${ctx(s.theme)?C.corpoClaro:C.corpo}">${it}</span></div>`).join('');return wrapVS(`${eyebrow(s.eyebrow,s.theme)}<div style="margin:34px 0 30px">${disp(s.title,s.theme,76,800)}</div><div>${rows}<div style="border-top:1px solid ${ctx(s.theme)?'rgba(224,197,136,.16)':C.linha}"></div></div><div style="position:absolute;bottom:130px;left:110px">${seal(s.theme)}</div>`);};
+  S.elia=(s)=>`<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 60%, rgba(224,197,136,.16), transparent 58%)"></div>`+wrapVS(`${eyebrow(s.eyebrow,s.theme)}<div style="margin:34px 0 22px">${disp(s.title,s.theme,80,760)}</div>${s.sub?bodyTxt(s.sub,s.theme,30,680):''}<div style="margin-top:48px">${chatBlock(s.chat,34)}</div><div style="display:flex;align-items:center;gap:14px;margin-top:44px;color:${C.douradoClaro}">${sun(32,C.douradoClaro)}<span style="font-family:${DISP};letter-spacing:.18em;font-size:30px">sunya · agenda</span></div>`);
+  S.audio=(s)=>{const bars=[26,48,72,90,60,96,52,80,38,64,92,56,34,70];let x=0,w='';bars.forEach(h=>{w+=`<rect x="${x}" y="${(110-h)/2}" width="20" height="${h}" rx="10" fill="${C.douradoClaro}"></rect>`;x+=34;});return wrapVS(`${eyebrow(s.eyebrow,s.theme)}<div style="margin:34px 0 22px">${disp(s.title,s.theme,74,780)}</div>${s.sub?bodyTxt(s.sub,s.theme,30,680):''}<div style="margin-top:54px;background:rgba(224,197,136,.07);border:1px solid rgba(224,197,136,.22);border-radius:44px;padding:54px"><div style="display:flex;align-items:center;gap:28px"><div style="width:96px;height:96px;border-radius:50%;flex:none;display:grid;place-items:center;background:rgba(224,197,136,.14);border:1px solid rgba(224,197,136,.4)"><svg width="34" height="34" viewBox="0 0 24 24" fill="${C.douradoClaro}"><path d="M8 5v14l11-7z"></path></svg></div><svg width="${x-14}" height="110" viewBox="0 0 ${x-14} 110" style="max-width:100%">${w}</svg></div><div style="text-align:center;margin:30px 0;color:${C.douradoClaro};font-size:38px">↓</div><div style="background:#F1E2C8;color:#6b4f2c;font-family:${BODY};font-weight:300;font-size:32px;line-height:1.45;padding:30px 36px;border-radius:34px;border-bottom-left-radius:12px">Oii, linda! Tenho 8h ou 10h amanhã. Qual fica melhor para você?</div></div><div style="position:absolute;bottom:130px;left:110px">${seal(s.theme)}</div>`);};
+  S.tones=(s)=>{const rows=s.tones.map((nm,i)=>`<div style="display:flex;align-items:center;gap:24px;padding:30px 34px;border-radius:28px;margin-bottom:18px;border:1px solid ${i===0?C.bronze:C.linha};background:${i===0?'#F6ECDC':C.papel}"><div style="width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;border:1px solid ${i===0?C.bronze:'#D9C9B0'};background:${i===0?C.bronze:'transparent'}">${i===0?'<span style="color:#fff;font-size:20px">✓</span>':''}</div><div style="font-family:${DISP};font-size:44px;color:${C.marrom}">${nm}</div></div>`).join('');return wrapVS(`${eyebrow(s.eyebrow,s.theme)}<div style="margin:34px 0 40px">${disp(s.title,s.theme,76,780)}</div><div>${rows}</div><div style="position:absolute;bottom:130px;left:110px">${seal(s.theme)}</div>`);};
+  S.cta=(s)=>`<div style="position:absolute;inset:0;background:${C.dourado}"></div><div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,250,242,.18) 2px, transparent 2px);background-size:46px 46px;opacity:.5"></div>`+wrapCS(`<div style="font-family:${LABEL};font-size:24px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:#3a2c18;position:relative">${s.eyebrow}</div><div style="font-family:${SIG};font-style:italic;font-size:${(s.num&&s.num.length>2)||s.num==='∞'?'200px':'280px'};line-height:1;color:#3a2c18;margin:20px 0;position:relative">${s.num||'7'}</div>${s.unit?`<div style="font-family:${DISP};font-size:54px;color:${C.escuro};position:relative">${s.unit}</div>`:''}<div style="font-family:${BODY};font-weight:300;color:#4a3a22;font-size:30px;margin-top:36px;max-width:640px;position:relative">${s.title}</div><div style="margin-top:50px;position:relative"><div style="display:inline-flex;align-items:center;gap:14px;background:${C.escuro};color:#F6E9CC;font-family:${BODY};font-weight:500;font-size:28px;padding:28px 54px;border-radius:100px">${s.cta||'sunyapp.com'} <span>↗</span></div></div><div style="position:absolute;bottom:120px;left:50%;transform:translateX(-50%);font-family:${DISP};letter-spacing:.6em;padding-left:.6em;color:#3a2c18;font-size:30px">sunya</div>`);
+  function renderStory(s){return `<div class="art" style="width:1080px;height:1920px;position:relative;overflow:hidden;background:${s.theme==='gold'?C.dourado:bg(s.theme)}">${(S[s.tpl]||S.frase)(s)}</div>`;}
+
+  window.SUNYA_RAP = { renderFeed, renderSlide, renderStory };
+})();
+
+</script>
+<script>
+(function(){
+  const {FEED, CARROSSEIS, STORIES, DESTAQUES, VIDEOS} = window.SUNYA_AP;
+  const {renderFeed, renderSlide, renderStory} = window.SUNYA_RAP;
+  const PILN={dor:'Dor real',voz:'Voz de quem usa',educacao:'Educação do estúdio',produto:'Produto e Eliá',autoridade:'Autoridade da marca',mentalidade:'Mentalidade',comunidade:'Comunidade'};
+  const STATUS=[['aprovado','Aprovado'],['ajustar','Ajustar'],['refazer','Refazer'],['nao','Não aprovado']];
+  const KEY='sunya-revisao-v1';
+  let store={}; try{store=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+  function get(id){return store[id]||(store[id]={status:'',arte:'',copy:''});}
+
+  // strip tags helper for plain titles in resumo
+  const strip=h=>(h||'').replace(/<[^>]+>/g,'');
+
+  const REGISTRY=[]; // {id, grupo, titulo}
+
+  function buildItem(opts){
+    // opts: id, grupo, artHTML, wide, pil, fmt, nslides, title, sub, copy, hashtags, watch
+    const st=get(opts.id);
+    REGISTRY.push({id:opts.id, grupo:opts.grupo, titulo:strip(opts.title)});
+    const el=document.createElement('div');
+    el.className='item'+(opts.wide?' wide':'')+(st.status?' is-'+st.status:'');
+    el.dataset.id=opts.id;
+    const copyBlock = opts.copy ? `<div class="copy"><div class="lbl"><span>✎</span> Copy e hashtags</div><div class="txt">${opts.copy}</div>${opts.hashtags?`<span class="hash">${opts.hashtags}</span>`:''}</div>` : '';
+    el.innerHTML=`
+      <div class="artarea">${opts.artHTML}</div>
+      <div class="rcol">
+        <div class="rmeta">${opts.pil?`<span class="pil">${opts.pil}</span>`:''}${opts.fmt?`<span class="fmt">${opts.fmt}</span>`:''}${opts.nslides?`<span class="fmt">${opts.nslides} dobras</span>`:''}${opts.watch?`<a class="watch" href="${opts.watch}" target="_blank">▶ Assistir</a>`:''}</div>
+        <div class="rtitle">${opts.title}</div>
+        ${opts.sub?`<div class="rsub">${opts.sub}</div>`:''}
+        ${copyBlock}
+        <div class="status">${STATUS.map(s=>`<button class="sbtn ${st.status===s[0]?'on':''}" data-v="${s[0]}"><span class="ck"></span>${s[1]}</button>`).join('')}</div>
+        <div class="notes">
+          <div class="note"><label><span class="ic">✦</span> Ajuste na arte</label><textarea data-f="arte" placeholder="Visual, cor, layout, imagem...">${st.arte||''}</textarea></div>
+          <div class="note"><label><span class="ic">✎</span> Ajuste na copy</label><textarea data-f="copy" placeholder="Texto, frase, legenda, palavra...">${st.copy||''}</textarea></div>
+        </div>
+      </div>`;
+    el.querySelectorAll('.sbtn').forEach(b=>b.onclick=()=>{
+      const s=get(opts.id);
+      s.status = s.status===b.dataset.v ? '' : b.dataset.v;
+      el.querySelectorAll('.sbtn').forEach(x=>x.classList.toggle('on',x.dataset.v===s.status));
+      el.className='item'+(opts.wide?' wide':'')+(s.status?' is-'+s.status:'');
+      save(); updateSummary();
+    });
+    el.querySelectorAll('.notes textarea').forEach(t=>t.oninput=()=>{const s=get(opts.id);s[t.dataset.f]=t.value;save();updateSummary();});
+    return el;
+  }
+
+  // helpers de arte
+  function thumb(html,story){return `<div class="thumb${story?' story':''}">${html}</div>`;}
+  function stripOf(slides,fn,story){return `<div class="strip${story?' story':''}">${slides.map((sl,j)=>`<div class="s">${fn(sl)}<span class="sn">${j+1}</span></div>`).join('')}</div>`;}
+
+  // FEED
+  const fl=document.getElementById('feedList');
+  FEED.forEach((p,i)=>fl.appendChild(buildItem({id:'feed-'+i,grupo:'Feed',artHTML:thumb(renderFeed(p)),pil:PILN[p.pilar],fmt:p.status,title:p.title,copy:p.legenda,hashtags:p.hashtags})));
+  document.getElementById('feedCount').textContent=`${FEED.length} posts`;
+
+  // CARROSSEIS · completos
+  const cl=document.getElementById('carroList');
+  CARROSSEIS.forEach((c,i)=>cl.appendChild(buildItem({id:'carro-'+i,grupo:'Carrossel',wide:true,artHTML:stripOf(c.slides,renderSlide,false),pil:PILN[c.pilar],fmt:'Carrossel',nslides:c.slides.length,title:c.titulo,copy:c.legenda,hashtags:c.hashtags})));
+  document.getElementById('carroCount').textContent=`${CARROSSEIS.length} carrosséis · todas as dobras`;
+
+  // STORIES
+  const sl=document.getElementById('storyList');
+  STORIES.forEach((s,i)=>sl.appendChild(buildItem({id:'story-'+i,grupo:'Story',artHTML:thumb(renderStory(s),true),fmt:'Story',title:s.title,sub:s.eyebrow,copy:s.legenda,hashtags:s.hashtags})));
+  document.getElementById('storyCount').textContent=`${STORIES.length} stories`;
+
+  // DESTAQUES · completos
+  const dl=document.getElementById('destList');
+  DESTAQUES.forEach((d,i)=>dl.appendChild(buildItem({id:'dest-'+i,grupo:'Destaque',wide:true,artHTML:stripOf(d.slides,renderStory,true),fmt:'Destaque',nslides:d.slides.length,title:d.nome,sub:strip(d.slides[0].title),copy:d.legenda,hashtags:d.hashtags})));
+  document.getElementById('destCount').textContent=`${DESTAQUES.length} sequências · todas as telas`;
+
+  // VIDEOS
+  const vl=document.getElementById('videoList');
+  VIDEOS.forEach((v,i)=>{
+    const poster=`<a class="thumb vidthumb" href="${v.arquivo}" target="_blank" style="background:${v.tema}"><div class="play"><svg width="22" height="22" viewBox="0 0 24 24" fill="#E6CB93"><path d="M6 4l14 8-14 8z"></path></svg></div></a>`;
+    vl.appendChild(buildItem({id:'video-'+i,grupo:'Vídeo',artHTML:poster,fmt:v.fmt,title:v.titulo,copy:v.legenda,hashtags:v.hashtags,watch:buildWatchUrl(v.arquivo)}));
+  });
+  document.getElementById('videoCount').textContent=`${VIDEOS.length} vídeos`;
+
+  // SUMMARY
+  function updateSummary(){
+    const total=REGISTRY.length;
+    const c={aprovado:0,ajustar:0,refazer:0,nao:0};
+    REGISTRY.forEach(r=>{const s=store[r.id]; if(s&&s.status)c[s.status]++;});
+    const marked=c.aprovado+c.ajustar+c.refazer+c.nao;
+    const cores={aprovado:'#1F8A5B',ajustar:'#C9A35B',refazer:'#9C4A33',nao:'#7a6453'};
+    const labels={aprovado:'Aprovado',ajustar:'Ajustar',refazer:'Refazer',nao:'Não aprovado'};
+    document.getElementById('counts').innerHTML=Object.keys(c).map(k=>`<span><span class="dot" style="background:${cores[k]}"></span>${c[k]} ${labels[k]}</span>`).join('')+`<span style="color:#9a8a76">${marked}/${total} revisados</span>`;
+    document.getElementById('prog').style.width=(total?marked/total*100:0)+'%';
+  }
+  updateSummary();
+
+  // RESUMO em texto
+  function buildResumo(){
+    let out='REVISÃO DE CONTEÚDO · SUNYA\n';
+    out+='Data: '+new Date().toLocaleDateString('pt-BR')+'\n';
+    const c={aprovado:0,ajustar:0,refazer:0,nao:0};
+    REGISTRY.forEach(r=>{const s=store[r.id];if(s&&s.status)c[s.status]++;});
+    out+=`Aprovados: ${c.aprovado} · Ajustar: ${c.ajustar} · Refazer: ${c.refazer} · Não aprovados: ${c.nao}\n`;
+    out+='\n———\n';
+    const L={aprovado:'APROVADO',ajustar:'AJUSTAR',refazer:'REFAZER',nao:'NÃO APROVADO'};
+    let grupoAtual='';
+    REGISTRY.forEach((r,i)=>{
+      const s=store[r.id]||{};
+      if(!s.status && !s.arte && !s.copy) return;
+      if(r.grupo!==grupoAtual){out+=`\n【 ${r.grupo} 】\n`;grupoAtual=r.grupo;}
+      out+=`\n• ${r.titulo}\n`;
+      out+=`  Status: ${s.status?L[s.status]:'(sem marcação)'}\n`;
+      if(s.arte && s.arte.trim()) out+=`  Arte: ${s.arte.trim()}\n`;
+      if(s.copy && s.copy.trim()) out+=`  Copy: ${s.copy.trim()}\n`;
+    });
+    const algumComentario=REGISTRY.some(r=>{const s=store[r.id];return s&&(s.status||s.arte||s.copy);});
+    if(!algumComentario) out+='\n(nenhuma peça marcada ainda)\n';
+    return out;
+  }
+
+  const modal=document.getElementById('modal');
+  const toast=document.getElementById('toast');
+  let tt;
+  function showToast(m){toast.textContent=m;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('show'),1900);}
+  document.getElementById('copyBtn').onclick=()=>{
+    document.getElementById('resumo').value=buildResumo();
+    modal.classList.add('open');
+  };
+  function closeM(){modal.classList.remove('open');}
+  document.getElementById('closeModal').onclick=closeM;
+  document.getElementById('closeModal2').onclick=closeM;
+  modal.onclick=e=>{if(e.target===modal)closeM();};
+  document.getElementById('copyResumo').onclick=()=>{
+    const txt=document.getElementById('resumo').value;
+    navigator.clipboard?.writeText(txt).then(()=>showToast('Resumo copiado')).catch(()=>{
+      document.getElementById('resumo').select();document.execCommand('copy');showToast('Resumo copiado');
+    });
+  };
+
+  document.querySelectorAll('.topnav .secs a[href^="#"]').forEach(a=>a.onclick=e=>{e.preventDefault();const el=document.querySelector(a.getAttribute('href'));if(el)window.scrollTo({top:el.offsetTop-110,behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>
